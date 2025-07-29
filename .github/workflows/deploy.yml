@@ -1,0 +1,61 @@
+name: Deploy to Tencent EdgeOne
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run linter
+      run: npm run lint
+    
+    - name: Build application
+      run: npm run build
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-files-${{ matrix.node-version }}
+        path: dist/
+        retention-days: 7
+
+  # This job would integrate with EdgeOne's deployment API
+  # For now, it serves as a template for future automation
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: dist-files-18.x
+        path: dist/
+    
+    - name: Deploy to EdgeOne
+      run: |
+        echo "🚀 Ready for EdgeOne deployment!"
+        echo "📁 Build files are in ./dist/"
+        echo "🌐 Connect your repository to EdgeOne Pages for automatic deployment"
