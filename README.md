@@ -4,7 +4,10 @@ A modern, production-ready telemetry data unification and visualization platform
 
 ## 🚀 Live Demo
 
-Deploy this application to Tencent EdgeOne Pages for the competition!
+Deployed this application to Tencent EdgeOne Pages not just for the competition but also for it is a front-end platform for fast, serverless web development and deployment. It enables quick creation of static sites and dynamic applications with global content delivery and seamless edge functions.
+
+Deployment Link: https://telemetry-unifier-kepler.edgeone.app/
+
 
 ## ✨ Features
 
